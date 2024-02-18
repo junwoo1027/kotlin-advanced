@@ -11,7 +11,7 @@ fun main() {
 }
 
 // Generic Class
-class Cage<T> {
+class Cage<T: Any> {
     private val animals: MutableList<T> = mutableListOf()
 
     fun getFirst(): T {
