@@ -1,4 +1,4 @@
-package com.example.generic
+package com.example.delegate
 
 import kotlin.properties.Delegates
 
