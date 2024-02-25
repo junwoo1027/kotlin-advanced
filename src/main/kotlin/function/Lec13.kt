@@ -10,7 +10,7 @@ fun compute(num1: Int, num2: Int, op: (Int, Int) -> Int): Int {
     return op(num1, num2)
 }
 
-fun calculate(num1: Int, num2: Int, oper: Operator) = oper.calcFun(num1, num2)
+fun calculate(num1: Int, num2: Int, oper: Operator) = oper(num1, num2)
 
 enum class Operator(
     private val oper: Char,
@@ -25,5 +25,7 @@ enum class Operator(
         } else {
             a / b
         }
-    })
+    });
+
+    operator fun invoke(a: Int, b: Int): Int = this.calcFun(a, b)
 }
