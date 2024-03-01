@@ -3,10 +3,11 @@ package com.example.delegate
 interface Fruit {
     val name: String
     val color: String
+
     fun bite()
 }
 
-open class Apple: Fruit {
+open class Apple : Fruit {
     override val name: String
         get() = "사과"
     override val color: String
@@ -17,7 +18,7 @@ open class Apple: Fruit {
     }
 }
 
-class GreenApple: Fruit {
+class GreenApple : Fruit {
     override val name: String
         get() = "사과"
     override val color: String
@@ -28,14 +29,14 @@ class GreenApple: Fruit {
     }
 }
 
-class GreenApple2: Apple() {
+class GreenApple2 : Apple() {
     override val color: String
         get() = "초록색"
 }
 
 class GreenApple3(
-    private val apple: Apple
-): Fruit {
+    private val apple: Apple,
+) : Fruit {
     override val name: String
         get() = apple.name
     override val color: String
@@ -47,8 +48,8 @@ class GreenApple3(
 }
 
 class GreenApple4(
-    private val apple: Apple
-): Fruit by apple {
+    private val apple: Apple,
+) : Fruit by apple {
     override val name: String
         get() = "초록색"
 }

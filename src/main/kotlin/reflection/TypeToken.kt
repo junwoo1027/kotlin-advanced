@@ -26,19 +26,22 @@ fun main() {
 class TypeSafeCage() {
     private val animals: MutableMap<KClass<*>, Animal> = mutableMapOf()
 
-    fun <T: Animal> getOne(type: KClass<T>): T {
+    fun <T : Animal> getOne(type: KClass<T>): T {
         return type.cast(animals[type])
     }
 
-    fun <T: Animal> putOne(type: KClass<T>, animal: Animal) {
+    fun <T : Animal> putOne(
+        type: KClass<T>,
+        animal: Animal,
+    ) {
         animals[type] = type.cast(animal)
     }
 
-    inline fun <reified T: Animal> getOne(): T {
+    inline fun <reified T : Animal> getOne(): T {
         return this.getOne(T::class)
     }
 
-    inline fun <reified T: Animal> putOne(animal: T) {
+    inline fun <reified T : Animal> putOne(animal: T) {
         this.putOne(T::class, animal)
     }
 }
@@ -62,14 +65,17 @@ abstract class SuperTypeToken<T> {
 class SuperTypeSafeCage {
     private val animals: MutableMap<SuperTypeToken<*>, Any> = mutableMapOf()
 
-    fun <T: Any> getOne(token: SuperTypeToken<T>): T {
-        if(this.animals[token] == null) {
+    fun <T : Any> getOne(token: SuperTypeToken<T>): T {
+        if (this.animals[token] == null) {
             throw IllegalArgumentException()
         }
         return this.animals[token] as T
     }
 
-    fun <T: Any> putOne(token: SuperTypeToken<T>, animal: T) {
+    fun <T : Any> putOne(
+        token: SuperTypeToken<T>,
+        animal: T,
+    ) {
         animals[token] = animal
     }
 }

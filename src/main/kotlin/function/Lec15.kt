@@ -23,7 +23,10 @@ fun main() {
 //    }
 }
 
-inline fun iterate(numbers: List<Int>, crossinline exac: (Int) -> Unit) {
+inline fun iterate(
+    numbers: List<Int>,
+    crossinline exac: (Int) -> Unit,
+) {
     for (num in numbers) {
         exac(num)
     }
@@ -31,7 +34,7 @@ inline fun iterate(numbers: List<Int>, crossinline exac: (Int) -> Unit) {
 
 inline fun repeat(
     times: Int,
-    noinline exac: () -> Unit
+    noinline exac: () -> Unit,
 ) {
     for (i in 1..times) {
         exac

@@ -11,9 +11,10 @@ fun main() {
     try {
         logic(10)
     } catch (e: Exception) {
-        when(e) {
+        when (e) {
             is AException,
-            is BException -> println("A, B Exception")
+            is BException,
+            -> println("A, B Exception")
             is CException -> println("C Exception")
         }
     }
@@ -28,26 +29,29 @@ fun logic(i: Int) {
     throw CException()
 }
 
-fun handle(userId: Id<User>, bookId: Id<Book>) {
-
+fun handle(
+    userId: Id<User>,
+    bookId: Id<Book>,
+) {
 }
 
 class User(
     val id: Id<User>,
-    val name :String
+    val name: String,
 )
 
 class Book(
     val id: Id<Book>,
-    val author: String
+    val author: String,
 )
 
 @JvmInline
 value class Id<T>(val id: Long)
 
-
-
-fun <T> Result<T>.onError(vararg exceptions: KClass<out Throwable>, action: (Throwable) -> Unit): ResultWrapper<T> {
+fun <T> Result<T>.onError(
+    vararg exceptions: KClass<out Throwable>,
+    action: (Throwable) -> Unit,
+): ResultWrapper<T> {
     exceptionOrNull()?.let {
         if (it::class in exceptions) {
             action(it)
@@ -58,12 +62,16 @@ fun <T> Result<T>.onError(vararg exceptions: KClass<out Throwable>, action: (Thr
 
 class ResultWrapper<T>(
     private val result: Result<T>,
-    private val knownExceptions: MutableList<KClass<out Throwable>>) {
+    private val knownExceptions: MutableList<KClass<out Throwable>>,
+) {
     fun toResult(): Result<T> {
         return this.result
     }
 
-    fun onError(vararg exceptions: KClass<out Throwable>, action: (Throwable) -> Unit): ResultWrapper<T> {
+    fun onError(
+        vararg exceptions: KClass<out Throwable>,
+        action: (Throwable) -> Unit,
+    ): ResultWrapper<T> {
         this.result.exceptionOrNull()?.let {
             if (it::class in exceptions && it::class !in this.knownExceptions) {
                 action(it)
@@ -73,7 +81,8 @@ class ResultWrapper<T>(
     }
 }
 
+class AException : RuntimeException()
 
-class AException: RuntimeException()
-class BException: RuntimeException()
-class CException: RuntimeException()
+class BException : RuntimeException()
+
+class CException : RuntimeException()

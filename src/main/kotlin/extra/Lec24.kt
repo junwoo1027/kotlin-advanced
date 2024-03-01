@@ -2,8 +2,7 @@ package com.example.extra
 
 import kotlin.system.measureTimeMillis
 
-class Lec24 {
-}
+class Lec24
 
 // TODO 1
 fun main() {
@@ -12,12 +11,13 @@ fun main() {
         println("hello")
     }
 
-    val time = measureTimeMillis {
-        val a = 1
-        val b = 2
+    val time =
+        measureTimeMillis {
+            val a = 1
+            val b = 2
 //        Thread.sleep(2_000)
-        val result = a + b
-    }
+            val result = a + b
+        }
 
 //    acceptOnlyTwo(1)
 
@@ -29,7 +29,7 @@ fun acceptOnlyTwo(num: Int) {
 }
 
 class Person {
-    private val status =  PersonStatus.PLAYING
+    private val status = PersonStatus.PLAYING
 
     fun sleep() {
         check(this.status == PersonStatus.PLAYING) { "error!" } // IllegalStateException
@@ -37,6 +37,6 @@ class Person {
 
     enum class PersonStatus {
         PLAYING,
-        SLEEPING
+        SLEEPING,
     }
 }

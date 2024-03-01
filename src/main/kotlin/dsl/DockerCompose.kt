@@ -12,23 +12,24 @@ package com.example.dsl
  *     - "9999:3306"
  */
 fun main() {
-    val yml: DockerCompose = dockerCompose {
-        version { 3 }
-        service(name = "db") {
-            image  { "mysql" }
-            env("USER" - "myuser")
-            env("PASSWORD" - "mypassword")
-            port(host = 9999, container = 3306)
-        }
-    }
-
-    val yml2: DockerCompose = dockerCompose {
-        service(name = "db") {
-            this@dockerCompose.service(name = "web") {
-
+    val yml: DockerCompose =
+        dockerCompose {
+            version { 3 }
+            service(name = "db") {
+                image { "mysql" }
+                env("USER" - "myuser")
+                env("PASSWORD" - "mypassword")
+                port(host = 9999, container = 3306)
             }
         }
-    }
+
+    val yml2: DockerCompose =
+        dockerCompose {
+            service(name = "db") {
+                this@dockerCompose.service(name = "web") {
+                }
+            }
+        }
 
     println(yml.render("  "))
 
@@ -48,11 +49,14 @@ class DockerCompose {
     private var version: Int by onceNotNull()
     private val services = mutableListOf<Service>()
 
-    fun version(init:() -> Int) {
+    fun version(init: () -> Int) {
         version = init()
     }
 
-    fun service(name: String, init: Service.() -> Unit) {
+    fun service(
+        name: String,
+        init: Service.() -> Unit,
+    ) {
         val service = Service(name)
         service.init()
         services.add(service)
@@ -60,7 +64,7 @@ class DockerCompose {
 
     fun render(indent: String): String {
         val builder = StringBuilder()
-        builder.appendNew("version: '${version}'")
+        builder.appendNew("version: '$version'")
         builder.appendNew("services:")
         builder.appendNew(services.joinToString("\n") { it.render(indent) }.addIndent(indent, 1))
         return builder.toString()

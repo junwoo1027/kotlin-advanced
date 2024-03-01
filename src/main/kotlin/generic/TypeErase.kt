@@ -5,8 +5,8 @@ fun main() {
     numbers.filterIsInstance<Float>() // [2f]
 }
 
-inline fun <reified T> List<*>.hasAnyInstanceOf() : Boolean {
+inline fun <reified T> List<*>.hasAnyInstanceOf(): Boolean {
     return this.any { it is T }
 }
-class TypeErase {
-}
+
+class TypeErase

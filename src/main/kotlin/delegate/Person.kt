@@ -25,7 +25,7 @@ class Person3 {
 }
 
 class Person4 {
-    var age: Int by Delegates.vetoable(20) { _, _, newValue -> newValue >= 1}
+    var age: Int by Delegates.vetoable(20) { _, _, newValue -> newValue >= 1 }
 }
 
 fun main() {

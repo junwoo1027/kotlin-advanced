@@ -15,7 +15,7 @@ object ContainerV1 {
         registeredClasses.add(clazz)
     }
 
-    fun <T: Any> getInstance(type: KClass<T>): T {
+    fun <T : Any> getInstance(type: KClass<T>): T {
         return registeredClasses.firstOrNull { clazz -> clazz == type }
             ?.let { clazz -> clazz.constructors.first().call() as T }
             ?: throw IllegalArgumentException("해당 인스턴스 타입을 찾을 수 없습니다")
@@ -30,9 +30,10 @@ fun start(clazz: KClass<*>) {
 
 private val KClass<*>.packageName: String
     get() {
-        val qualifiedName = this.qualifiedName
-            ?: throw IllegalArgumentException("익명 객체입니다")
-        val hierarchy =  qualifiedName.split(".")
+        val qualifiedName =
+            this.qualifiedName
+                ?: throw IllegalArgumentException("익명 객체입니다")
+        val hierarchy = qualifiedName.split(".")
         return hierarchy.subList(0, hierarchy.lastIndex).joinToString(".")
     }
 
@@ -44,30 +45,32 @@ object ContainerV2 {
         registeredClasses.add(clazz)
     }
 
-     fun <T: Any> getInstance(type: KClass<T>): T {
+    fun <T : Any> getInstance(type: KClass<T>): T {
         if (type in cachedInstances) {
             return type.cast(cachedInstances[type])
         }
 
-        val instance = registeredClasses.firstOrNull { clazz -> clazz == type }
-            ?.let { clazz -> instantiate(clazz) as T }
-            ?: throw IllegalArgumentException("해당 인스턴스 타입을 찾을 수 없습니다")
+        val instance =
+            registeredClasses.firstOrNull { clazz -> clazz == type }
+                ?.let { clazz -> instantiate(clazz) as T }
+                ?: throw IllegalArgumentException("해당 인스턴스 타입을 찾을 수 없습니다")
 
         cachedInstances[type] = instance
         return instance
     }
 
-    private fun <T: Any> instantiate(clazz: KClass<T>):T {
+    private fun <T : Any> instantiate(clazz: KClass<T>): T {
         val constructor = findUsableConstructor(clazz)
-        val params = constructor.parameters
-            .map { param -> getInstance(param.type.classifier as KClass<*>) }
-            .toTypedArray()
+        val params =
+            constructor.parameters
+                .map { param -> getInstance(param.type.classifier as KClass<*>) }
+                .toTypedArray()
         return constructor.call(*params)
     }
 
     // clazz의 constructor들 중, 사용할 수 있는 constructor
     // constructor에 넣어햐 하는 타입들이 모두 등록된 경우 (컨테이너에서 관리하고 있는 경우)
-    private fun <T: Any> findUsableConstructor(clazz: KClass<T>): KFunction<T> {
+    private fun <T : Any> findUsableConstructor(clazz: KClass<T>): KFunction<T> {
         return clazz.constructors
             .firstOrNull { constructor -> constructor.parameters.isAllRegistered }
             ?: throw IllegalArgumentException("사용할 수 있는 생성자가 없습니다")
@@ -88,7 +91,6 @@ fun main() {
 //    val serviceB = ContainerV2.getInstance(ServiceB::class)
 //    serviceB.print()
 
-
     start(DI::class)
     val serviceB = ContainerV2.getInstance(ServiceB::class)
     serviceB.print()
@@ -106,10 +108,9 @@ class ServiceA {
 @MyClass
 class ServiceB(
     private val serviceA: ServiceA,
-    private val serviceC: ServiceC?
+    private val serviceC: ServiceC?,
 ) {
-
-    constructor(serviceA: ServiceA): this(serviceA, null)
+    constructor(serviceA: ServiceA) : this(serviceA, null)
 
     fun print() {
         serviceA.print()

@@ -26,9 +26,10 @@ fun executeAll(obj: Any) {
         return
     }
 
-    val callableFunctions =  kClass.members.filterIsInstance<KFunction<*>>()
-        .filter { it.returnType == Unit::class.createType() }
-        .filter { it.parameters.size == 1 && it.parameters[0].type == kClass.createType() }
+    val callableFunctions =
+        kClass.members.filterIsInstance<KFunction<*>>()
+            .filter { it.returnType == Unit::class.createType() }
+            .filter { it.parameters.size == 1 && it.parameters[0].type == kClass.createType() }
 
     callableFunctions.forEach { function ->
         function.call(obj)

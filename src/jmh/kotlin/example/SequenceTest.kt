@@ -15,9 +15,10 @@ import kotlin.random.Random
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 class SequenceTest {
     private val fruits = mutableListOf<Fruit>()
+
     @Setup
     fun init() {
-        (1..2_000_000).forEach { _ -> fruits.add(Fruit.random())}
+        (1..2_000_000).forEach { _ -> fruits.add(Fruit.random()) }
     }
 
     @Benchmark
@@ -41,17 +42,18 @@ class SequenceTest {
 
 data class Fruit(
     val name: String,
-    val price: Long
+    val price: Long,
 ) {
     companion object {
         private val NAME_CANDIDATES = listOf("사과", "바나나", "수박", "체리", "오렌지")
+
         fun random(): Fruit {
-            val num1 = Random.nextInt(0,5)
+            val num1 = Random.nextInt(0, 5)
             val num2 = Random.nextLong(1000, 20001)
 
             return Fruit(
                 name = NAME_CANDIDATES[num1],
-                price = num2
+                price = num2,
             )
         }
     }

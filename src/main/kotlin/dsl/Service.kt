@@ -5,6 +5,7 @@ class Service(private val name: String) {
     private var image: String by onceNotNull()
     private val environments = mutableListOf<Environment>()
     private val portRules = mutableListOf<PortRule>()
+
     fun image(init: () -> String) {
         image = init()
     }
@@ -13,7 +14,10 @@ class Service(private val name: String) {
         this.environments.add(environment)
     }
 
-    fun port(host: Int, container: Int) {
+    fun port(
+        host: Int,
+        container: Int,
+    ) {
         this.portRules.add(PortRule(host, container))
     }
 
